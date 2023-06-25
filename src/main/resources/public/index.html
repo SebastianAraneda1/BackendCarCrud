@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Crud</title>
+</head>
+<body>
+<h1>Servicio Rest para Autos</h1>
+<a href="/new-car.html">Nuevo Auto</a>
+<table id="cars">
+    <tr>
+        <th>ID</th>
+        <th>Patente</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Color</th>
+        <th>Eliminar</th>
+        <th>Modificar</th>
+    </tr>
+</table>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function(){
+        let url = "/cars"
+        $.get(url, function(json){
+            $.each(json.cars, function(index, element){
+                let idBtnDel = "btnDel_" + element.id
+                let idRow = "row_" + element.id
+                let row = "<tr id='" + idRow + "'>" +
+                    "<td>" + element.id + "</td>" +
+                    "<td>" + element.plateCode + "</td>" +
+                    "<td>" + element.brand + "</td>" +
+                    "<td>" + element.model + "</td>" +
+                    "<td>" + element.color + "</td>" +
+                    "<td><button id='" + idBtnDel + "'>Eliminar</button></td>" +
+                    "<td><a href='/update-car.html?id="+element.id+"'>Modificar</a></td>" +
+                    "</tr>"
+                $("#cars").append(row)
+                $("#" + idBtnDel).click(function(){
+                    let url = "/cars/" + element.id
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        success: function (result) {
+                            $("#" + idRow).hide()
+                        }
+                    });
+                })
+            })
+        })
+
+    })
+</script>
+</body>
+</html>

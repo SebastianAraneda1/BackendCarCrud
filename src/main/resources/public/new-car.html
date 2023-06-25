@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Auto</title>
+</head>
+<body>
+<h1>Nuevo Auto</h1>
+<form>
+    <label for="plateCode">Patente</label>
+    <input id="plateCode" type="text"><br>
+
+    <label for="brand">Marca</label>
+    <input id="brand" type="text"><br>
+
+    <label for="model">Modelo</label>
+    <input id="model" type="text"><br>
+
+    <label for="color">Color</label>
+    <input id="color" type="text"><br>
+
+    <br>
+    <a id="save" href="/">Guardar</a>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        let settings = {}
+        settings.headers = {
+            "Accept":"application/json",
+            "Content-Type": "application/json"
+        }
+        $.ajaxSetup(settings)
+
+        $("#save").click(function(){
+            let formData = {}
+            formData.plateCode = $("#plateCode").val()
+            formData.brand = $("#brand").val()
+            formData.model = $("#model").val()
+            formData.color = $("#color").val()
+
+            let data = JSON.stringify(formData)
+
+            $.post("/cars", data, function(json, status, jqxhr){
+                alert(status)
+            }, "json")
+        })
+    })
+</script>
+</body>
+</html>
